@@ -19,6 +19,7 @@
     <a:UiPage.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </a:UiPage.Resources>
+
     <a:UiPage.InputBindings>
         <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteImageCommand}"/>
     </a:UiPage.InputBindings>

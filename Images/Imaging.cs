@@ -36,11 +36,13 @@ namespace KGallery.Images
         public static byte[] CreateThumbnailPixels(string imagePath, int pixelWidth = 256)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(imagePath);
-            BitmapImage thumbnail = new BitmapImage();
+            BitmapImage thumbnail = new BitmapImage
+            {
+                CacheOption = BitmapCacheOption.OnLoad,
+                CreateOptions = BitmapCreateOptions.IgnoreImageCache
+            };
 
             thumbnail.BeginInit();
-            thumbnail.CacheOption = BitmapCacheOption.OnLoad;
-            thumbnail.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             thumbnail.UriSource = new Uri(imagePath);
             thumbnail.DecodePixelWidth = pixelWidth;
             thumbnail.EndInit();
@@ -93,13 +95,15 @@ namespace KGallery.Images
             }
 
             BitmapSource source = Clipboard.GetImage();
+            source.Freeze();
+
             int pw = source.PixelWidth;
             int ph = source.PixelHeight;
             int stride = pw * 4;
             byte[] pixels = new byte[ph * stride];
             source.CopyPixels(pixels, stride, 0);
 
-            BitmapSource image = BitmapSource.Create(pw, ph, source.DpiX, source.DpiY, PixelFormats.Bgra32, null, pixels, stride);
+            BitmapSource image = BitmapSource.Create(pw, ph, source.DpiX, source.DpiY, PixelFormats.Bgr32, null, pixels, stride);
             image.Freeze();
 
             using FileStream fs = File.Create(destinationPath);

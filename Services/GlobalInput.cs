@@ -17,9 +17,22 @@ namespace KGallery.Services
             _inputHandler.KeyDown += callback;
         }
 
+        public void Subscribe(InputBindingCollection bindings)
+        {
+            _inputHandler.InputBindings.AddRange(bindings);
+        }
+
         public void Unsubscribe(KeyEventHandler callback)
         {
             _inputHandler.KeyDown -= callback;
+        }
+
+        public void Unsubscribe(InputBindingCollection bindings)
+        {
+            foreach (InputBinding binding in bindings)
+            {
+                _inputHandler.InputBindings.Remove(binding);
+            }
         }
     }
 }

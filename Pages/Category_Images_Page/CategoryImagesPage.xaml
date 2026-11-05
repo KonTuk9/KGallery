@@ -19,6 +19,10 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </a:UiPage.Resources>
 
+    <a:UiPage.InputBindings>
+        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteImageCommand}"/>
+    </a:UiPage.InputBindings>
+
     <Grid Margin="20,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

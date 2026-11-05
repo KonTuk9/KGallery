@@ -1,5 +1,6 @@
 ﻿using KGallery.Abstractions;
 using KGallery.Controls;
+using KGallery.Services;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,11 +11,13 @@ namespace KGallery.Pages.Images_Page
     /// </summary>
     public partial class ImagesPage : UiPage
     {
-        private ImageViewer _viewer;
+        private readonly ImageViewer _viewer;
+        private readonly GlobalInput _input;
         private ImagesPageViewModel _viewModel => DataContext as ImagesPageViewModel;
 
-        public ImagesPage(ImagesPageViewModel viewModel, ImageViewer imageViewer) : base(viewModel)
+        public ImagesPage(ImagesPageViewModel viewModel, ImageViewer imageViewer, GlobalInput input) : base(viewModel)
         {
+            _input = input;
             _viewer = imageViewer;
             InitializeComponent();
             Loaded += OnLoaded;
@@ -25,6 +28,12 @@ namespace KGallery.Pages.Images_Page
         {
             _viewer.SetImages(_viewModel.Images);
             _viewModel.SetCategory(null);
+            _input.Subscribe(InputBindings);
+        }
+
+        protected override void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _input.Unsubscribe(InputBindings);
         }
 
         private void ImageDoubleClick(object sender, MouseButtonEventArgs e)
