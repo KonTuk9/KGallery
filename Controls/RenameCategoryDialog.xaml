@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="KGallery.Controls.RenameCategoryDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KGallery.Controls"
+             mc:Ignorable="d"
+             KeyDown="OnDialogKeyDown"
+             Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             d:DesignHeight="720" d:DesignWidth="1080">
+    <Grid>
+        <Border Background="Black" Opacity="0.25"/>
+
+        <Border Background="{ui:ThemeResource}" Width="500" Height="300" CornerRadius="4.5">
+            <ui:Card VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <ui:TextBlock FontSize="20" FontWeight="SemiBold" Text="Rename category"/>
+
+                    <StackPanel Grid.Row="1" Margin="0,20,0,0">
+                        <ui:TextBlock Text="New name should not match other categories name. Input text is case sensitive" TextWrapping="Wrap"/>
+                        <Label Content="Category name" Margin="0,12,0,0"/>
+                        <ui:TextBox Name="textBox" Text="{Binding NewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Enter name..."/>
+                    </StackPanel>
+                </Grid>
+
+                <ui:Card.Footer>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ui:Button Command="{Binding SubmitCommand}" Width="100" Content="Submit" Appearance="Primary" Margin="0,0,8,0"/>
+                        <ui:Button Command="{Binding CloseCommand}" Width="100" Content="Cancel"/>
+                    </StackPanel>
+                </ui:Card.Footer>
+            </ui:Card>
+
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Direction="0" Opacity="0.4" ShadowDepth="0" Color="#202020" />
+            </Border.Effect>
+        </Border>
+    </Grid>
+</UserControl>

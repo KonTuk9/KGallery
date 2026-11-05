@@ -1,0 +1,23 @@
+﻿<Application x:Class="KGallery.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:KGallery"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:cnv="clr-namespace:KGallery.Converters"
+             xmlns:cmnd="clr-namespace:KGallery.Commands">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ControlsDictionary/>
+                <ui:ThemesDictionary/>
+                <ResourceDictionary Source="/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <cnv:InvertConverter x:Key="InvertConverter"/>
+
+            <cmnd:ListBoxSelectAllCommand x:Key="ListBoxSelectAllCommand"/>
+            <cmnd:CopyTextCommand x:Key="CopyTextCommand"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

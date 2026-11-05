@@ -1,0 +1,50 @@
+﻿<a:UiPage x:Class="KGallery.Pages.Settings_Page.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KGallery.Pages.Settings_Page"
+      mc:Ignorable="d" 
+      xmlns:a="clr-namespace:KGallery.Abstractions"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+      d:Background="{ui:ThemeResource}"
+      d:DataContext="{d:DesignInstance Type=local:SettingsPageViewModel}"
+      d:DesignHeight="720" d:DesignWidth="1080"
+      ui:NavigationView.HeaderContent="Settings"
+      Title="SettingsPage">
+    <Grid Margin="20,0,12,0">
+        <StackPanel>
+            <ui:TextBlock Text="Appearance" FontTypography="Subtitle"/>
+            <ui:CardControl Icon="{ui:SymbolIcon Symbol=WeatherMoon16}" Header="Enable dark mode" Margin="0,12,0,0">
+                <ui:ToggleSwitch IsChecked="{Binding DarkThemeEnabled}" Command="{Binding SwitchThemeModeCommand}"/>
+            </ui:CardControl>
+
+            <Separator Margin="0,12,0,0"/>
+            <ui:TextBlock Text="Preferences" FontTypography="Subtitle" Margin="0,12,0,0"/>
+
+            <ui:Card Margin="0,12,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:SymbolIcon Symbol="Folder16" FontSize="24" Margin="0,0,14,0"/>
+                    <StackPanel Grid.Column="1">
+                        <ui:TextBlock Text="Images base directory"/>
+                        <ui:TextBlock Text="Initial directory where images will be stored by default" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+
+                    <ui:TextBox Grid.Column="2" Text="{Binding BaseDirectoryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="C:/Users/User/Images/Image.png" Margin="20,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="3">
+                        <ui:Button Command="{Binding BrowseDirectoryCommand}" VerticalAlignment="Stretch" Icon="{ui:SymbolIcon Symbol=FolderAdd16}" Padding="10,5,10,6" Margin="4,0,0,0"/>
+                        <ui:Button Command="{Binding SubmitDirectoryCommand}" Content="Submit" Margin="4,0,0,0" VerticalAlignment="Stretch"/>
+                    </StackPanel>
+                </Grid>
+            </ui:Card>
+        </StackPanel>
+    </Grid>
+</a:UiPage>

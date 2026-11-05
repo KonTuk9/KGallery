@@ -1,0 +1,112 @@
+﻿<a:UiPage
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KGallery.Pages.Images_Page"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:a="clr-namespace:KGallery.Abstractions"
+      xmlns:dd="urn:gong-wpf-dragdrop" x:Class="KGallery.Pages.Images_Page.ImagesPage"
+      ScrollViewer.CanContentScroll="False"
+      xmlns:c="clr-namespace:KGallery.Controls"
+      Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+      ui:NavigationView.HeaderContent="Images"
+      d:DataContext="{d:DesignInstance Type={x:Type local:ImagesPageViewModel}}"
+    d:Background="{ui:ThemeResource}"
+    mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1080"
+      Title="ImagesPage">
+    <a:UiPage.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </a:UiPage.Resources>
+    <a:UiPage.InputBindings>
+        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteImageCommand}"/>
+    </a:UiPage.InputBindings>
+
+    <Grid Margin="20,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Height="36" Margin="0,0,0,12">
+            <ui:Button Width="140" Command="{Binding OpenFiltersFlyoutCommand}" Icon="{ui:SymbolIcon Symbol=Filter16}" Content="Filters" VerticalAlignment="Stretch"/>
+            <ui:Button Command="{Binding PasteImageCommand}" Icon="{ui:SymbolIcon Symbol=Clipboard16}" Content="Paste image" VerticalAlignment="Stretch" Margin="8,0,0,0"/>
+            <ui:Button Command="{Binding ImportImagesCommand}" Icon="{ui:SymbolIcon Symbol=FolderAdd16}" Content="Import image" VerticalAlignment="Stretch" Margin="8,0,0,0"/>
+            <ToggleButton x:Name="toggleButton" Style="{StaticResource SelectToggleButton}" Width="100" IsChecked="{Binding IsSelectionEnabled}" VerticalAlignment="Stretch" Margin="8,0,0,0"/>
+            <ui:DropDownButton Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=toggleButton}" Content="Selection edit" Icon="{ui:SymbolIcon Symbol=Edit16}" VerticalAlignment="Stretch" Margin="8,0,0,0">
+                <ui:DropDownButton.Flyout>
+                    <ContextMenu>
+                        <ui:MenuItem StaysOpenOnClick="True" InputGestureText="Ctrl+A" Command="{StaticResource ListBoxSelectAllCommand}" CommandParameter="{x:Reference imagesListBox}" Header="Select all" Icon="{ui:SymbolIcon Symbol=TaskListRtl24}"/>
+                        <ui:MenuItem Command="{Binding EditRangeCategoriesCommand}" CommandParameter="{Binding SelectedItems, Source={x:Reference imagesListBox}}" Header="Change categories" Icon="{ui:SymbolIcon Symbol=ArchiveSettings16}"/>
+                        <ui:MenuItem Command="{Binding DeleteRangeCommand}" CommandParameter="{Binding SelectedItems, Source={x:Reference imagesListBox}}" Header="Delete" Icon="{ui:SymbolIcon Symbol=Delete16}"/>
+                    </ContextMenu>
+                </ui:DropDownButton.Flyout>
+            </ui:DropDownButton>
+        </StackPanel>
+        <ListBox VirtualizingPanel.VirtualizationMode="Recycling" IsTabStop="False" VirtualizingPanel.CacheLengthUnit="Item" 
+        VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.CacheLength="0" ItemsSource="{Binding Images, Mode=OneWay}" 
+        Grid.Row="1" SelectionMode="{Binding SelectionMode}" x:Name="imagesListBox">
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="2"/>
+                    <Setter Property="Border.CornerRadius" Value="4"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid x:Name="item" Width="180" Height="180">
+                        <ui:Image x:Name="image" MouseDoubleClick="ImageDoubleClick" Stretch="UniformToFill" Source="{Binding Thumbnail, Mode=OneWay}"
+                        Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Page}}">
+                            <ui:Image.ContextMenu>
+                                <ContextMenu>
+                                    <ui:MenuItem Header="Open" Icon="{ui:SymbolIcon Symbol=Open16}" Command="{Binding PlacementTarget.Tag.OpenImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
+                                    <ui:MenuItem Header="Edit" Icon="{ui:SymbolIcon Symbol=Edit16}" Command="{Binding PlacementTarget.Tag.EditImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
+                                    <ui:MenuItem Header="Delete" Icon="{ui:SymbolIcon Symbol=Delete16}" Command="{Binding PlacementTarget.Tag.DeleteImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </ui:Image.ContextMenu>
+                        </ui:Image>
+
+                        <ToggleButton Command="{Binding DataContext.ToggleFavouriteCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}" IsChecked="{Binding Favourited, Mode=TwoWay}" Padding="8" Margin="4" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                    <Setter Property="Content" Value="{ui:SymbolIcon Symbol=Star16}"/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="Content" Value="{ui:SymbolIcon Filled=True, Symbol=Star16}"/>
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=item}" Value="True">
+                                            <Setter Property="Visibility" Value="{Binding DataContext.DisableOnSelectionVisibility, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <c:VirtualizingUiWrapPanel/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+        <ui:Flyout IsOpen="{Binding FiltersFlyoutOpened, Mode=TwoWay}" Placement="MousePoint" Grid.RowSpan="2">
+            <StackPanel>
+                <ui:TextBlock Text="Filters" FontTypography="BodyStrong"/>
+                <ui:Button Width="200" Command="{Binding OpenFiltersSetupDialogCommand}" Icon="{ui:SymbolIcon Symbol=ArchiveSettings16}" Content="Setup filters" HorizontalAlignment="Stretch" Margin="0,4,0,0"/>
+                <Separator Margin="0,4,0,0"/>
+                <ui:TextBlock Text="Sorting" FontTypography="BodyStrong" Margin="0,4,0,0"/>
+                <RadioButton IsChecked="{Binding DateSortingSelected, Mode=TwoWay}" GroupName="s" Content="Sort by date" Margin="0,4,0,0"/>
+                <RadioButton IsChecked="{Binding FavouriteSortingSelected, Mode=TwoWay}" GroupName="s" Content="Favourite first" Margin="0,4,0,0"/>
+            </StackPanel>
+        </ui:Flyout>
+    </Grid>
+</a:UiPage>
