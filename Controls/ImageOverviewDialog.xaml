@@ -44,8 +44,6 @@
                                 <ui:Button Command="{StaticResource CopyTextCommand}" CommandParameter="{Binding Image.ImagePath}" Grid.Column="1" Icon="{ui:SymbolIcon Symbol=Copy16}" Padding="5,5,5,5" Width="27"/>
                             </Grid>
 
-                            <Separator Margin="0,4,0,4"/>
-
                             <ui:TextBlock>
                                 <Run Text="Created :"/>
                                 <Run Text="{Binding Image.CreationTime, Mode=OneWay}"/>

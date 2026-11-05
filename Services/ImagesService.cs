@@ -81,10 +81,7 @@ namespace KGallery.Services
 
         private void DeleteOwnFile(string path)
         {
-            if (Path.GetDirectoryName(path) == ImagesDirectory)
-            {
-                File.Delete(path);
-            }
+            File.Delete(path);
         }
 
         public async Task EditFavouriteAsync(int id, bool value)

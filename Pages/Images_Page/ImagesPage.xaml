@@ -62,6 +62,7 @@
                         Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Page}}">
                             <ui:Image.ContextMenu>
                                 <ContextMenu>
+                                    <ui:MenuItem Header="Overview" Icon="{ui:SymbolIcon Symbol=Diversity20}" Command="{Binding PlacementTarget.Tag.OpenImageOverviewCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
                                     <ui:MenuItem Header="Open" Icon="{ui:SymbolIcon Symbol=Open16}" Command="{Binding PlacementTarget.Tag.OpenImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
                                     <ui:MenuItem Header="Edit" Icon="{ui:SymbolIcon Symbol=Edit16}" Command="{Binding PlacementTarget.Tag.EditImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
                                     <ui:MenuItem Header="Delete" Icon="{ui:SymbolIcon Symbol=Delete16}" Command="{Binding PlacementTarget.Tag.DeleteImageCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}"/>
