@@ -19,18 +19,21 @@ namespace KGallery.Images
             {
                 return null;
             }
-            BitmapImage bitmap = new BitmapImage
-            {
-                CacheOption = BitmapCacheOption.OnLoad,
-                CreateOptions = BitmapCreateOptions.IgnoreImageCache
-            };
+            BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             bitmap.UriSource = new Uri(path);
             bitmap.EndInit();
 
             bitmap.Freeze();
 
             return bitmap;
+        }
+
+        public static BitmapSource LoadImageDefault(string path)
+        {
+            return new BitmapImage(new Uri(path));
         }
 
         public static byte[] CreateThumbnailPixels(string imagePath, int pixelWidth = 256)

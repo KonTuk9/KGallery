@@ -34,7 +34,7 @@ namespace KGallery.Controls
         {
             _input.Subscribe(ImageViewerKeyDown);
 
-            image.Source = Imaging.LoadImage(item.ImagePath);
+            image.Source = Imaging.LoadImageDefault(item.ImagePath);
 
             _index = _images.IndexOf(item);
 
@@ -66,7 +66,7 @@ namespace KGallery.Controls
             }
 
             _index = _index > 0 ? _index - 1 : _images.Count - 1;
-            image.Source = Images.Imaging.LoadImage(_images[_index].ImagePath);
+            image.Source = Images.Imaging.LoadImageDefault(_images[_index].ImagePath);
         }
 
         private void SetNextImage()
@@ -77,7 +77,7 @@ namespace KGallery.Controls
             }
 
             _index = _index < _images.Count - 1 ? _index + 1 : 0;
-            image.Source = Images.Imaging.LoadImage(_images[_index].ImagePath);
+            image.Source = Images.Imaging.LoadImageDefault(_images[_index].ImagePath);
         }
 
         private void ImageViewerKeyDown(object sender, KeyEventArgs e)

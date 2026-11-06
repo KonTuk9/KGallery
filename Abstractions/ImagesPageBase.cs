@@ -77,7 +77,10 @@ namespace KGallery.Abstractions
                 {
                     return SortExpressionComparer<ImageViewModel>.Descending(f => f.Favourited).ThenByDescending(f => f.CreationTime);
                 }
-
+                if (!DateSortingSelected)
+                {
+                    DateSortingSelected = true;
+                }
                 return SortExpressionComparer<ImageViewModel>.Descending(f => f.CreationTime);
             });
         }
